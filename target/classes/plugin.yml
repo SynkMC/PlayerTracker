@@ -1,0 +1,4 @@
+name: PlayerTracker
+version: '1.0'
+main: synk.PlayerTracker
+api-version: '1.20'
