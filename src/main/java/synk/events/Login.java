@@ -23,21 +23,27 @@ public class Login implements Listener {
             Connection co = DriverManager.getConnection(playerTracker.dbHost, playerTracker.dbUser, playerTracker.dbPass);
             if (CheckPremium.CheckPremium(p.getName(), p.getUniqueId().toString())) {
                 String insert = "INSERT INTO premium_players (server_name, server_ip, player_name, player_id, join_time, leave_time) VALUES (?, ?, ?, ?, ?, ?)";
+                StringBuilder uuidBuilder = new StringBuilder();
+                String[] sss = p.getUniqueId().toString().split("-");
+                for (String ssss : sss) {
+                    uuidBuilder.append(ssss);
+                }
+                String uuid = uuidBuilder.toString();
                 PreparedStatement prep = co.prepareStatement(insert);
                 prep.setString(1, playerTracker.serverName);
                 prep.setString(2, playerTracker.serverIP);
                 prep.setString(3, p.getName());
-                prep.setString(4, p.getUniqueId().toString());
-                prep.setInt(5, (int) System.currentTimeMillis()/1000);
+                prep.setString(4, uuid);
+                prep.setLong(5, System.currentTimeMillis()/1000);
                 prep.setInt(6, 0);
                 prep.executeUpdate();
             } else {
-                String insert = "INSERT INTO cracked_players (server_name, server_ip, player_name, join_time, leave_time) VALUES (?, ?, ?, ?, ?, ?)";
+                String insert = "INSERT INTO cracked_players (server_name, server_ip, player_name, join_time, leave_time) VALUES (?, ?, ?, ?, ?)";
                 PreparedStatement prep = co.prepareStatement(insert);
                 prep.setString(1, playerTracker.serverName);
                 prep.setString(2, playerTracker.serverIP);
                 prep.setString(3, p.getName());
-                prep.setInt(4, (int) System.currentTimeMillis()/1000);
+                prep.setLong(4, System.currentTimeMillis()/1000);
                 prep.setInt(5, 0);
                 prep.executeUpdate();
             }

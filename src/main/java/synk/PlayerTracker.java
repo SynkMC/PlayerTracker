@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import synk.events.Login;
+import synk.events.Logout;
 
 public final class PlayerTracker extends JavaPlugin {
     public String prefix = ChatColor.translateAlternateColorCodes('&', "&8[&4PlayerTracker&8] » &r");
@@ -17,6 +18,7 @@ public final class PlayerTracker extends JavaPlugin {
     public void onEnable() {
         instance = this;
         Bukkit.getPluginManager().registerEvents(new Login(), this);
+        Bukkit.getPluginManager().registerEvents(new Logout(), this);
         getConfig().options().copyDefaults(true);
         saveConfig();
         serverName = getConfig().getString("server-name");

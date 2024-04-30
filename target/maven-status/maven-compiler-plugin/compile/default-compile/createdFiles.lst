@@ -1,4 +1,5 @@
 synk\functions\CheckPremium.class
-synk\Password.class
+synk\events\Logout.class
 synk\events\Login.class
+synk\Password.class
 synk\PlayerTracker.class

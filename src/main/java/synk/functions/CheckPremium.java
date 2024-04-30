@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CheckPremium {
     public static Boolean CheckPremium(String name, String uuid) {
@@ -17,19 +19,29 @@ public class CheckPremium {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            StringBuilder builder = new StringBuilder();
+            List<String> rep = new ArrayList<>();
             String line;
             while ((line = reader.readLine()) != null) {
-                builder.append(line);
+                rep.add(line);
             }
             reader.close();
             conn.disconnect();
-            String jsonRep = builder.toString();
-            String id = jsonRep.split("\"id\" : \"")[1].split("\"")[0];
+            String s = rep.get(1);
+            String id = null;
+            if (s.contains("\"id\"")) {
+                String[] ss;
+                ss = s.split("\"");
+                id = ss[3];
+                Bukkit.getConsoleSender().sendMessage("Id found: "+s+ ", "+id);
+            }
+            String[] ss = uuid.split("-");
+            StringBuilder builder = new StringBuilder();
+            for (String st : ss) {
+                builder.append(st);
+            }
+            uuid = builder.toString();
             if (id.equalsIgnoreCase(uuid)) {
                 b = true;
-            } else if (id == null) {
-                b = false;
             }
         } catch (IOException ex) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"There was an error while checking "+name+"'s premium status.");
